@@ -2,7 +2,7 @@
   <div class="navbar">
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
     <div class="app-breadcrumb">
-      {{ $store.state.user.userInfo.company }}
+      {{ $store.getters.company }}
       <span class="breadBtn">体验版</span>
     </div>
     <!-- <breadcrumb class="breadcrumb-container" /> -->
@@ -11,7 +11,7 @@
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img src="http://destiny001.gitee.io/image/cxk.gif" class="user-avatar">
-          <span class="user-name">{{ $store.state.user.userInfo.username }}</span>
+          <span class="user-name">{{ $store.getters.username }}</span>
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -48,9 +48,9 @@ export default {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
-    async logout() {
-      await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    logout() {
+      this.$store.commit('user/logout')
+      this.$router.push('/login')
     }
   }
 }

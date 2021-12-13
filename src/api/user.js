@@ -22,6 +22,17 @@ export function getUserInfo() {
     method: 'POST'
   })
 }
+/**
+ *获取员工资料
+ * @param {*} id
+ * @returns
+ */
+export function getUserInfoById(id) {
+  return request({
+    url: '/sys/user/' + id,
+    method: 'GET'
+  })
+}
 
 export function logout() {
   return request()

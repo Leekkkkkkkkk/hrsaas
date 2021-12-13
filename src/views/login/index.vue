@@ -1,5 +1,8 @@
 <template>
   <div class="login-container">
+    <!-- element ui 组件库提供的 -->
+    <!-- :model="loginForm" 整个表单数据-->
+    <!-- :rules="loginRules" 表单的校验规则 -->
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
@@ -15,7 +18,7 @@
         <el-input
           ref="mobile"
           v-model="loginForm.mobile"
-          placeholder="Username"
+          placeholder="请输入手机号"
           name="mobile"
           type="text"
           tabindex="1"
@@ -32,7 +35,7 @@
           ref="password"
           v-model="loginForm.password"
           :type="passwordType"
-          placeholder="Password"
+          placeholder="请输入密码"
           name="password"
           tabindex="2"
           auto-complete="on"
@@ -43,7 +46,7 @@
         </span>
       </el-form-item>
 
-      <el-button class="loginBtn" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.prevent="handleLogin">登录</el-button>
+      <el-button class="loginBtn" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click="handleLogin">登录</el-button>
 
       <div class="tips">
         <span style="margin-right:20px;">用户名: 13800000000</span>
@@ -66,7 +69,7 @@ export default {
       loginRules: {
         mobile: [
           { required: true, message: '请输入手机号', trigger: 'blur' },
-          { pattern: /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/, message: '手机号不合法', trigger: 'blur' }
+          { pattern: /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/, message: '手机号码不合法', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
@@ -99,11 +102,16 @@ export default {
     },
     handleLogin() {
       this.$refs.loginForm.validate(async(flag) => {
+        // flag: 校验成功或失败的标识符 true/false
+        // obj: 保存
         if (!flag) return
         this.loading = true
-        await this.$store.dispatch('user/login', this.loginForm)
-        this.loading = false
-        this.$router.push('/')
+        try {
+          await this.$store.dispatch('user/login', this.loginForm)
+          this.$router.push('/')
+        } finally {
+          this.loading = false
+        }
       })
     }
   }
@@ -128,6 +136,16 @@ $cursor: #fff;
 .login-container {
   background-image: url('~@/assets/common/login.jpg'); // 设置背景图片
   background-position: center; // 将图片位置设置为充满整个屏幕
+  // background-size: cover;
+  .loginBtn {
+    background: #407ffe;
+    height: 64px;
+    line-height: 32px;
+    font-size: 24px;
+  }
+  .el-form-item__error {
+    color: #fff
+  }
   .el-input {
     display: inline-block;
     height: 47px;
@@ -155,9 +173,6 @@ $cursor: #fff;
     background: rgba(255, 255, 255, 0.7); // 输入登录表单的背景色
     border-radius: 5px;
     color: #454545;
-  }
-   .el-form-item__error {
-    color: #fff
   }
 }
 </style>
@@ -222,12 +237,6 @@ $light_gray:#eee;
     color: $dark_gray;
     cursor: pointer;
     user-select: none;
-  }
-  .loginBtn {
-    background: #407ffe;
-    height: 64px;
-    line-height: 32px;
-    font-size: 24px;
   }
 }
 </style>
