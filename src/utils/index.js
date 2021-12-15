@@ -115,3 +115,18 @@ export function param2Obj(url) {
   })
   return obj
 }
+
+// 递归函数
+export function transListToTree(arr, pid) {
+  const newArr = []
+  arr.forEach(item => {
+    if (item.pid === pid) {
+      const children = transListToTree(arr, item.id)
+      if (children.length) {
+        item.children = children
+      }
+      newArr.push(item)
+    }
+  })
+  return newArr
+}
