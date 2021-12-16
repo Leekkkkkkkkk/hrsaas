@@ -3,14 +3,17 @@
     <div class="app-container">
       <el-card class="tree-card">
         <!-- 用了一个行列布局 -->
-        <tree-tools :obj="compInfo" :is-root="true" />
+        <!-- 标头标题 -->
+        <tree-tools :obj="compInfo" :is-root="true" @add-dept="onAdd" />
         <!-- //树形组件 -->
+        <!-- 树型结构 -->
         <el-tree :data="treeData" :props="defaultProps" :default-expand-all="true">
           <!-- <tree-tools /> -->
-          <tree-tools slot-scope="{data}" :obj="data" @add-dept="onAdd" />
+          <tree-tools slot-scope="{data}" :obj="data" @add-dept="onAdd" @onEdit="onEdit" />
         </el-tree>
       </el-card>
-      <add-dept v-model="dialogVisible" :node="node" />
+      <!-- 编辑功能 -->
+      <add-dept ref="depts" v-model="dialogVisible" :node="node" @edit-success="getDepartmentInfo" @add-success="getDepartmentInfo" />
     </div>
   </div>
 </template>
@@ -25,7 +28,7 @@ export default {
   data() {
     return {
       treeData: [],
-      compInfo: { name: '黑客帝国', manager: '负责人' },
+      compInfo: { name: '黑客帝国', manager: '负责人', id: '' },
       defaultProps: {
         label: 'name'
       },
@@ -48,6 +51,11 @@ export default {
     onAdd(obj) {
       this.dialogVisible = true
       this.node = obj
+    },
+    onEdit(obj) {
+      this.dialogVisible = true
+      this.node = obj
+      this.$refs.depts.getDeptsInfo(obj.id)
     }
   }
 }

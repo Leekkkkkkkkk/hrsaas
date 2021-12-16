@@ -16,7 +16,7 @@
             <!-- 下拉菜单 -->
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item @click.native="$emit('add-dept',obj)">添加子部门</el-dropdown-item>
-              <el-dropdown-item v-if="!isRoot">查看部门</el-dropdown-item>
+              <el-dropdown-item v-if="!isRoot" @click.native="$emit('onEdit',obj)">查看部门</el-dropdown-item>
               <el-dropdown-item v-if="!isRoot" @click.native="onDel">删除部门</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
