@@ -7,6 +7,12 @@ export default {
       path: '',
       component: () => import('@/views/employees/index'),
       meta: { title: '员工', icon: 'people' }
+    },
+    {
+      path: 'import',
+      component: () => import('@/views/employees/import.vue'),
+      meta: { title: '员工', icon: 'people' },
+      hidden: true
     }
   ]
 }

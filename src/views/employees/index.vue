@@ -3,8 +3,8 @@
     <div class="app-container">
       <pageTools :is-show-before="false">
         <template #after>
-          <el-button size="small" type="primary">导入</el-button>
-          <el-button size="small" type="primary">导出</el-button>
+          <el-button size="small" type="primary" @click="$router.push('/employees/import')">导入</el-button>
+          <el-button size="small" type="primary" @click="onClick">导出</el-button>
           <el-button size="small" icon="el-icon-plus" type="primary" @click="addEmployeesDialogVisible=true">新增员工</el-button>
         </template>
       </pageTools>
@@ -39,7 +39,7 @@
           <el-pagination :total="total" layout="prev, pager, next" :page-size="query.size" @current-change="handleCurrentChange" />
         </el-row>
       </el-card>
-      <add-employees v-model="addEmployeesDialogVisible" />
+      <add-employees v-model="addEmployeesDialogVisible" @add-success="getEmployeesListData" />
     </div>
   </div>
 </template>
@@ -59,7 +59,7 @@ export default {
       },
       epmloyeesList: [],
       total: 0,
-      addEmployeesDialogVisible: true
+      addEmployeesDialogVisible: false
     }
   },
 
@@ -69,7 +69,6 @@ export default {
   methods: {
     async getEmployeesListData() {
       const res = await getEmployeesList(this.query)
-      console.log(res)
       this.epmloyeesList = res.rows
       this.total = res.total
     },
@@ -80,6 +79,37 @@ export default {
     formmatType(row, column, cellValue, index) {
       const findItem = hireType.find(item => item.id === cellValue)
       return findItem ? findItem.value : '聘用形式错误'
+    },
+    async onClick() {
+      const { rows } = await getEmployeesList({
+        page: 1,
+        size: this.total
+      })
+      const headers = {
+        '手机号': 'mobile',
+        '姓名': 'username',
+        '入职日期': 'timeOfEntry',
+        '聘用形式': 'formOfEmployment',
+        '转正日期': 'correctionTime',
+        '工号': 'workNumber',
+        '部门': 'departmentName'
+      }
+      const header = Object.keys(headers) // 拿到是['手机号','名字']
+      const data = rows.map(item => {
+        // [{}{}]
+        return header.map(key => {
+          return item[headers[key]]
+        })
+      })
+      import('@/vendor/Export2Excel').then(excel => {
+        excel.export_json_to_excel({
+          header, // 表头 必填
+          data, // 具体数据 必填
+          filename: 'excel-list', // 非必填
+          autoWidth: true, // 非必填
+          bookType: 'xlsx' // 非必填
+        })
+      })
     }
   }
 }

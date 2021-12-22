@@ -22,3 +22,26 @@ export function getEmployeesList(params) {
     params
   })
 }
+
+/**
+ *新增员工
+ * @param {*} data
+ */
+export const addEmployees = (data) => {
+  return request({
+    url: '/sys/user',
+    method: 'POST',
+    data
+  })
+}
+/**
+ *批量导入
+ * @param {*} data []
+ */
+export const importEmployees = (data) => {
+  return request({
+    url: '/sys/user/batch',
+    method: 'POST',
+    data
+  })
+}

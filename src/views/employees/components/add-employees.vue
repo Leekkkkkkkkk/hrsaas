@@ -4,9 +4,9 @@
       title="提示"
       :visible="visible"
       width="50%"
-      @close="$emit('input',false)"
+      @close="onClose"
     >
-      <el-form label-width="120px" :rules="rules" :model="form">
+      <el-form ref="from" label-width="120px" :rules="rules" :model="form">
         <el-form-item prop="username" label="姓名">
           <el-input v-model="form.username" style="width:80%" placeholder="请输入姓名" />
         </el-form-item>
@@ -17,7 +17,9 @@
           <el-date-picker v-model="form.timeOfEntry" style="width:80%" placeholder="请选择入职时间" />
         </el-form-item>
         <el-form-item prop="formOfEmployment" label="聘用形式">
-          <el-select v-model="form.formOfEmployment" style="width:80%" placeholder="请选择" />
+          <el-select v-model="form.formOfEmployment" style="width:80%" placeholder="请选择">
+            <el-option v-for="item in hireType " :key="item.id" :label="item.value" :value="item.id" />
+          </el-select>
         </el-form-item>
         <el-form-item prop="workNumber" label="工号">
           <el-input v-model="form.workNumber" style="width:80%" placeholder="请输入工号" />
@@ -32,7 +34,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="$emit('input',false)">取 消</el-button>
-        <el-button type="primary" @click="visible">确 定</el-button>
+        <el-button type="primary" @click="onSave">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -41,6 +43,8 @@
 <script>
 import { getdepartment } from '@/api/organization'
 import { transListToTree } from '@/utils/index.js'
+import employees from '@/api/constant/employees'
+import { addEmployees } from '@/api/employees'
 export default {
   model: {
     prop: 'visible'
@@ -78,7 +82,7 @@ export default {
           { required: true, message: '工号不能为空', trigger: 'blur' }
         ],
         departmentName: [
-          { required: true, message: '部门不能为空', trigger: 'change' }
+          { required: true, message: '部门不能为空', trigger: ['change', 'blur'] }
         ],
         timeOfEntry: [
           { required: true, message: '入职时间', trigger: 'blur' }
@@ -92,7 +96,8 @@ export default {
         children: 'children',
         label: 'name'
       },
-      isShowTree: false
+      isShowTree: false,
+      hireType: employees.hireType
     }
   },
 
@@ -101,13 +106,30 @@ export default {
   },
 
   methods: {
-    handleNodeClick(data) {
-      console.log(data)
-    },
     async  onDepartmentFocus() {
       const res = await getdepartment()
       this.data = transListToTree(res.depts, '')
       this.isShowTree = true
+    },
+    handleNodeClick(data) {
+      this.form.departmentName = data.name
+      this.isShowTree = false
+      console.log(data)
+    },
+    onClose() {
+      this.$emit('input', false)
+      this.$refs.from.resetFields()
+      this.isShowTree = false
+    },
+    async onSave() {
+      try {
+        await this.$refs.from.validate()
+        await addEmployees(this.form)
+        this.$emit('input', false)
+        this.$emit('add-success')
+      } catch (error) {
+        console.dir(error)
+      }
     }
   }
 }

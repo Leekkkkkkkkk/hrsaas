@@ -37,8 +37,11 @@ module.exports = {
       errors: true
     },
     proxy: {
+      // '/api': {
+      //   target: 'http://ihrm-java.itheima.net'
+      // },
       '/api': {
-        target: 'http://ihrm-java.itheima.net'
+        target: 'http://liufusong.top:3000'
       }
     }
     // before: require('./mock/mock-server.js')
