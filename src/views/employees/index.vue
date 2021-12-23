@@ -24,8 +24,8 @@
           </el-table-column>
           <el-table-column label="账户状态" sortable prop="enableState" />
           <el-table-column label="操作" sortable fixed="right" width="280">
-            <template>
-              <el-button type="text" size="small">查看</el-button>
+            <template slot-scope="{row}">
+              <el-button type="text" size="small" @click="$router.push('employees/detail/'+ row.id)">查看</el-button>
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
@@ -55,7 +55,7 @@ export default {
     return {
       query: {
         page: 1,
-        size: 5
+        size: 20
       },
       epmloyeesList: [],
       total: 0,
@@ -98,6 +98,10 @@ export default {
       const data = rows.map(item => {
         // [{}{}]
         return header.map(key => {
+          if (key === '聘用形式') {
+            const findItem = hireType.find(hireItem => hireItem.id === item[headers[key] - 0])
+            return findItem ? findItem.value : '未知'
+          }
           return item[headers[key]]
         })
       })
@@ -106,6 +110,8 @@ export default {
           header, // 表头 必填
           data, // 具体数据 必填
           filename: 'excel-list', // 非必填
+          multiHeader: [['手机号', '', '', '', '', '', '']],
+          merges: ['A1:A2'],
           autoWidth: true, // 非必填
           bookType: 'xlsx' // 非必填
         })

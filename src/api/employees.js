@@ -45,3 +45,48 @@ export const importEmployees = (data) => {
     data
   })
 }
+/**
+ *获取员工基本个人信息
+ * @param {*} id
+ * @returns
+ */
+export function getUserBaseInfoById(id) {
+  return request({
+    url: `/employees/${id}/personalInfo`,
+    method: 'GET'
+  })
+}
+
+/**
+ * 更新员工个人信息
+ * @param {Object} data
+ */
+export const saveEmployeeInfo = (data) => {
+  return request({
+    url: `/employees/${data.id}/personalInfo`,
+    method: 'PUT',
+    data
+  })
+}
+/**
+ *获取员工岗位信息
+ * @param {*} id
+ * @returns
+ */
+export const getEmployeesJobInfo = id => {
+  return request({
+    url: `/employees/${id}/jobs`
+  })
+}
+
+/**
+ * 保存更新员工岗位信息
+ * @param {*} data
+ */
+export const saveEmployeeJob = (data) => {
+  return request({
+    url: `/employees/${data.userId}/jobs`,
+    method: 'PUT',
+    data
+  })
+}
