@@ -90,6 +90,7 @@
 
         <el-form-item label="员工照片">
           <!-- 放置上传图片 -->
+          <UploadImage ref="uploadImage" :limit="1" @on-success="onSuccess" />
         </el-form-item>
         <el-form-item label="国家/地区">
           <el-select v-model="formData.nationalArea" class="inputW2">
@@ -282,7 +283,7 @@
 </template>
 <script>
 import EmployeeEnum from '@/api/constant/employees'
-import { getUserInfoById, getUserBaseInfoById, updateUserInfoById, saveEmployeeInfo } from '@/api/employees'
+import { getUserInfoById, getUserBaseInfoById, updateUserInfoById, saveEmployeeInfo } from '@/api/user'
 export default {
   name: 'UserDetail',
   data() {
@@ -371,6 +372,10 @@ export default {
       const res = await getUserBaseInfoById(this.userId)
       console.log(res)
       this.formData = res
+      this.formData.staffPhoto && this.$refs.uploadImage.fileList.push({
+        uid: Math.random(),
+        url: this.formData.staffPhoto
+      })
     },
     // 更新用户个人信息
     async saveUser() {
@@ -379,11 +384,20 @@ export default {
     // 更新员工信息
     async savePersonal() {
       try {
+        if (this.$refs.uploadImage.progressData > 0 && this.$refs.uploadImage.progressData < 100) {
+          this.$message.error('图片正在上传中')
+          return
+        }
         await saveEmployeeInfo({ ...this.formData, id: this.userId })
         this.$message.success('更新成功')
       } catch (error) {
         console.dir(error)
       }
+    },
+    // 上传图片
+    onSuccess(fileList) {
+      debugger
+      this.formData.staffPhoto = fileList[0].url
     }
   }
 }
