@@ -34,7 +34,7 @@
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
-              <el-button type="text" size="small" @click="showRoleDialog=true">角色</el-button>
+              <el-button type="text" size="small" @click="setShowRoleDialog(row.id)">角色</el-button>
               <el-button type="text" size="small">删除</el-button>
             </template>
           </el-table-column>
@@ -55,7 +55,7 @@
       <canvas ref="code" />
       <span slot="footer" class="dialog-footer" />
     </el-dialog>
-    <assign-role :show-role-dialog="showRoleDialog" />
+    <assign-role v-model="showRoleDialog" :user-id="userId" />
   </div>
 </template>
 
@@ -78,7 +78,8 @@ export default {
       total: 0,
       addEmployeesDialogVisible: false,
       qrCodeShow: false,
-      showRoleDialog: false
+      showRoleDialog: false,
+      userId: ''
     }
   },
 
@@ -142,6 +143,10 @@ export default {
       this.$nextTick(_ => {
         QrCode.toCanvas(this.$refs.code, imgUrl)
       })
+    },
+    setShowRoleDialog(id) {
+      this.showRoleDialog = true
+      this.userId = id
     }
   }
 }

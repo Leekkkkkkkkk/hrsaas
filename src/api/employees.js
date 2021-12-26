@@ -90,3 +90,15 @@ export const saveEmployeeJob = (data) => {
     data
   })
 }
+/**
+ *给员工分配角色
+ * @param {*} data {id,[]}
+ * @returns
+ */
+export const saveEmployeeAssignRole = (data) => {
+  return request({
+    url: `/sys/user/assignRoles`,
+    method: 'PUT',
+    data
+  })
+}
