@@ -9,7 +9,8 @@
           </el-breadcrumb-item>
           <el-breadcrumb-item>打印</el-breadcrumb-item>
         </el-breadcrumb>
-        <div v-if="type === 'personal'">
+        <el-button v-print="'#personal'">打印</el-button>
+        <div v-if="type === 'personal'" id="personal">
           <h2 class="centInfo">员工信息表</h2>
           <table cellspacing="0" width="100%" class="tableList">
             <tr class="title">

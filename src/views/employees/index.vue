@@ -34,7 +34,7 @@
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
-              <el-button type="text" size="small">角色</el-button>
+              <el-button type="text" size="small" @click="showRoleDialog=true">角色</el-button>
               <el-button type="text" size="small">删除</el-button>
             </template>
           </el-table-column>
@@ -55,6 +55,7 @@
       <canvas ref="code" />
       <span slot="footer" class="dialog-footer" />
     </el-dialog>
+    <assign-role :show-role-dialog="showRoleDialog" />
   </div>
 </template>
 
@@ -63,9 +64,10 @@ import { getEmployeesList } from '@/api/employees'
 import employees from '@/api/constant/employees'
 import addEmployees from './components/add-employees.vue'
 import QrCode from 'qrcode'
+import AssignRole from './components/assign-role.vue'
 const { hireType } = employees
 export default {
-  components: { addEmployees },
+  components: { addEmployees, AssignRole },
   data() {
     return {
       query: {
@@ -75,7 +77,8 @@ export default {
       epmloyeesList: [],
       total: 0,
       addEmployeesDialogVisible: false,
-      qrCodeShow: false
+      qrCodeShow: false,
+      showRoleDialog: false
     }
   },
 

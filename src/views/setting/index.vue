@@ -35,16 +35,16 @@
                 </template>
               </el-table-column>
             </el-table>
+            <el-pagination
+              :current-page="queryData.page"
+              :page-sizes="[2, 4, 8, 10]"
+              :page-size="queryData.pagesieze"
+              layout="total, sizes, prev, pager, next"
+              :total="total"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+            />
           </el-tab-pane>
-          <el-pagination
-            :current-page="queryData.page"
-            :page-sizes="[2, 4, 8, 10]"
-            :page-size="queryData.pagesieze"
-            layout="total, sizes, prev, pager, next"
-            :total="total"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-          />
           <el-tab-pane label="公司信息" name="second">
             <el-row :gutter="20">
               <el-col :span="12" :offset="3">
@@ -108,7 +108,7 @@ export default {
       rolesDate: [],
       queryData: {
         page: 1,
-        pagesieze: 10
+        pagesieze: 5
       },
       total: 0,
       addRoleVisible: false,
