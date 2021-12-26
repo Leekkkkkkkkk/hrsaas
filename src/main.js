@@ -11,6 +11,9 @@ import '@/styles/index.scss' // global css
 import App from './App' // 根组件
 import store from './store' // vuex
 import router from './router' // 路由
+import Print from 'vue-print-nb'
+// Global instruction
+Vue.use(Print)
 
 import '@/icons' // icon
 import '@/permission' // permission control

@@ -3,6 +3,7 @@
     <!-- 个人信息 -->
     <el-form label-width="220px">
       <!-- 工号 入职时间 -->
+      <i class="el-icon-printer" @click="$router.push('/employees/print/'+userId+'?type=personal')" />
       <el-row class="inline-info">
         <el-col :span="12">
           <el-form-item label="工号">
@@ -396,7 +397,6 @@ export default {
     },
     // 上传图片
     onSuccess(fileList) {
-      debugger
       this.formData.staffPhoto = fileList[0].url
     }
   }

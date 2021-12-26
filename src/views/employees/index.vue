@@ -14,6 +14,11 @@
         <el-table border :data="epmloyeesList">
           <el-table-column label="序号" sortable type="index" width="80" />
           <el-table-column label="姓名" sortable prop="username" />
+          <el-table-column label="头像" sortable>
+            <template slot-scope="{row}">
+              <img style="width:100px;hight:100px" :src="row.staffPhoto" alt="" @click="qcCode(row.staffPhoto)">
+            </template>
+          </el-table-column>
           <el-table-column label="工号" sortable prop="workNumber" />
           <el-table-column label="聘用形式" sortable prop="formOfEmployment" :formatter="formmatType" />
           <el-table-column label="部门" sortable prop="departmentName" />
@@ -41,6 +46,15 @@
       </el-card>
       <add-employees v-model="addEmployeesDialogVisible" @add-success="getEmployeesListData" />
     </div>
+    <!-- 二维码显示弹层 -->
+    <el-dialog
+      title="提示"
+      :visible.sync="qrCodeShow"
+      width="30%"
+    >
+      <canvas ref="code" />
+      <span slot="footer" class="dialog-footer" />
+    </el-dialog>
   </div>
 </template>
 
@@ -48,6 +62,7 @@
 import { getEmployeesList } from '@/api/employees'
 import employees from '@/api/constant/employees'
 import addEmployees from './components/add-employees.vue'
+import QrCode from 'qrcode'
 const { hireType } = employees
 export default {
   components: { addEmployees },
@@ -59,7 +74,8 @@ export default {
       },
       epmloyeesList: [],
       total: 0,
-      addEmployeesDialogVisible: false
+      addEmployeesDialogVisible: false,
+      qrCodeShow: false
     }
   },
 
@@ -115,6 +131,13 @@ export default {
           autoWidth: true, // 非必填
           bookType: 'xlsx' // 非必填
         })
+      })
+    },
+    qcCode(imgUrl) {
+      if (!imgUrl) return this.$message.error('该用户头像为空')
+      this.qrCodeShow = true
+      this.$nextTick(_ => {
+        QrCode.toCanvas(this.$refs.code, imgUrl)
       })
     }
   }
