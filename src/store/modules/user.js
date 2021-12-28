@@ -33,6 +33,7 @@ const actions = {
     const res = await getUserInfo()
     const userInfo = await getUserInfoById(res.userId)
     context.commit('setUserInfo', { ...res, ...userInfo })
+    return res
   }
 }
 export default {

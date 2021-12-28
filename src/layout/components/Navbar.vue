@@ -33,7 +33,7 @@
 import { mapGetters } from 'vuex'
 // import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-
+import { resetRouter } from '@/router/index'
 export default {
   components: {
     Hamburger
@@ -50,7 +50,9 @@ export default {
     },
     logout() {
       this.$store.commit('user/logout')
+      this.$store.commit('permission/setRoutes', [])
       this.$router.push('/login')
+      resetRouter()
     }
   }
 }

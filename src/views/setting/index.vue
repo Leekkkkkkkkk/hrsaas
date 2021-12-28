@@ -29,9 +29,9 @@
                 label="操作"
               >
                 <template slot-scope="{row}">
-                  <el-button type="text">分配权限</el-button>
+                  <el-button type="text" @click="showRights(row.id)">分配权限</el-button>
                   <el-button type="text" @click="edit(row)">修改</el-button>
-                  <el-button type="text">删除</el-button>
+                  <el-button type="text" :disabled="isDisabled(point.rolesDel)">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -90,6 +90,19 @@
             <el-button type="primary" @click="onSave">确 定</el-button>
           </span>
         </el-dialog>
+        <!-- 权限 -->
+        <el-dialog
+          title="提示"
+          :visible.sync="setRightsDialogVisible"
+          width="50%"
+          @close="defaultCheckedKeys=[]"
+        >
+          <el-tree ref="terrNode" node-key="id" check-strictly :default-checked-keys="defaultCheckedKeys" :data="treedata" :props="{label:'name'}" default-expand-all show-checkbox icon-class="  " />
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="setRightsDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="onSaveRights">确 定</el-button>
+          </span>
+        </el-dialog>
       </el-card>
     </div>
   </div>
@@ -98,9 +111,14 @@
 <script>
 import { mapGetters } from 'vuex'
 import { getCompanyInfo } from '@/api/company'
-import { getRolesList, addRoles, editRole } from '@/api/roles'
+import { getRolesList, addRoles, editRole, getRolesInfo, setRoles } from '@/api/roles'
+import { getPermission } from '@/api/permission'
+import { transListToTree } from '@/utils'
+import mixinsPoint from '@/mixins/point'
+console.log(mixinsPoint)
 export default {
   name: 'Setting',
+  mixins: [mixinsPoint],
   data() {
     return {
       activeName: 'first',
@@ -125,7 +143,11 @@ export default {
           { required: true, message: '请输入角色描述', trigger: 'change' },
           { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
         ]
-      }
+      },
+      setRightsDialogVisible: false,
+      treedata: [],
+      defaultCheckedKeys: [],
+      rolesId: ''
     }
   },
   computed: {
@@ -142,6 +164,7 @@ export default {
       console.log(res)
       this.company = res
     },
+    // 获取数据
     async loadRolesList() {
       const res = await getRolesList(this.queryData)
       this.rolesDate = res.rows
@@ -156,6 +179,7 @@ export default {
       this.queryData.page = val
       this.loadRolesList()
     },
+    // 添加编辑
     async onSave() {
       try {
         if (this.form.id) {
@@ -172,18 +196,36 @@ export default {
         console.log(error)
       }
     },
+    // 编辑
     edit(ite) {
       console.log(ite)
       this.form = { ...ite }
       // this.form = ite
       this.addRoleVisible = true
     },
+    // 清空表单
     addDialogClose() {
       this.$refs.form.resetFields()
       this.form = {
         name: '',
         description: ''
       }
+    },
+    // 添加权限
+    async showRights(id) {
+      this.setRightsDialogVisible = true
+      const res = await getPermission()
+      this.treedata = transListToTree(res, '0')
+      const result = await getRolesInfo(id)
+      this.defaultCheckedKeys = result.permIds
+      this.rolesId = id
+    },
+    async onSaveRights() {
+      const keys = this.$refs.terrNode.getCheckedKeys()
+      if (!keys.length) return this.$message.error('请选择权限')
+      console.log(keys)
+      console.log(this.rolesId)
+      await setRoles({ id: this.rolesId, permIds: keys })
     }
   }
 }

@@ -60,11 +60,11 @@ export const constantRoutes = [
       component: () => import('@/views/dashboard/index'),
       meta: { title: '首页', icon: 'dashboard' }
     }]
-  },
+  }
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+
 ]
-const varRoutes = [
+export const varRoutes = [
   approvalsRouter,
   departmentsRouter,
   employeesRouter,
@@ -77,7 +77,7 @@ const varRoutes = [
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: [...constantRoutes, ...varRoutes]
+  routes: [...constantRoutes] // ...varRoutes
 })
 
 const router = createRouter()

@@ -34,3 +34,28 @@ export function editRole(data) {
     data
   })
 }
+
+/**
+ *根据ID获取角色权限详情
+ * @param {*} id
+ * @returns
+ */
+export const getRolesInfo = (id) => {
+  return request({
+    url: `/sys/role/${id}`,
+    method: 'GET'
+  })
+}
+
+/**
+ *给角色分配权限
+ * @param {*} data
+ * @returns
+ */
+export const setRoles = (data) => {
+  return request({
+    url: '/sys/role/assignPrem',
+    method: 'PUT',
+    data
+  })
+}
