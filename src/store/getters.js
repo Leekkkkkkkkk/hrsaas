@@ -9,6 +9,7 @@ const getters = {
   // 公司名称
   company: state => state.user.userInfo.company,
   // 公司ID
-  companyId: state => state.user.userInfo.companyId
+  companyId: state => state.user.userInfo.companyId,
+  userId: state => state.user.userInfo.id
 }
 export default getters

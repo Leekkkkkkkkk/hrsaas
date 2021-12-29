@@ -8,7 +8,8 @@
     <!-- <breadcrumb class="breadcrumb-container" /> -->
 
     <div class="right-menu">
-      <el-dropdown class="avatar-container" trigger="click">
+      <full-screen />
+      <el-dropdown style="margin: 0 10px" class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img src="http://destiny001.gitee.io/image/cxk.gif" class="user-avatar">
           <span class="user-name">{{ $store.getters.username }}</span>
@@ -102,6 +103,7 @@ export default {
   }
 
   .right-menu {
+    display: flex;
     float: right;
     height: 100%;
     line-height: 50px;
