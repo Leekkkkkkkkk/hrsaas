@@ -45,12 +45,14 @@
           <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
         </span>
       </el-form-item>
-
-      <el-button class="loginBtn" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click="handleLogin">登录</el-button>
+      <el-form-item>
+        <chang-lang />
+      </el-form-item>
+      <el-button class="loginBtn" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click="handleLogin">{{ $t('login.loginBtn') }}</el-button>
 
       <div class="tips">
-        <span style="margin-right:20px;">用户名: 13800000000</span>
-        <span> 密码: 123456</span>
+        <span style="margin-right:20px;">{{ $t('login.username') }}: 13800000000</span>
+        <span> {{ $t('login.password') }}: 123456</span>
       </div>
 
     </el-form>

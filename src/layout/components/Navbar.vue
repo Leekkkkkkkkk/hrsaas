@@ -8,6 +8,7 @@
     <!-- <breadcrumb class="breadcrumb-container" /> -->
 
     <div class="right-menu">
+      <chang-lang />
       <full-screen />
       <el-dropdown style="margin: 0 10px" class="avatar-container" trigger="click">
         <div class="avatar-wrapper">

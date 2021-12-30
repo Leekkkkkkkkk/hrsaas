@@ -6,6 +6,7 @@
 
 <script>
 import * as echarts from 'echarts'
+
 export default {
   data() {
     return {

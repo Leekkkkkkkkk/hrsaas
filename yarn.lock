@@ -2268,6 +2268,11 @@
     "babel-template" "^6.26.0"
     "babel-types" "^6.26.0"
 
+"babel-plugin-transform-remove-console@^6.9.4":
+  "integrity" "sha1-uYA2DAZzhOJLNXpYjYB9PINSd4A="
+  "resolved" "https://registry.npmmirror.com/babel-plugin-transform-remove-console/download/babel-plugin-transform-remove-console-6.9.4.tgz"
+  "version" "6.9.4"
+
 "babel-plugin-transform-strict-mode@^6.24.1":
   "integrity" "sha1-1fr3qleKZbvlkc9e2uBKDGcCB1g="
   "resolved" "https://registry.npmmirror.com/babel-plugin-transform-strict-mode/download/babel-plugin-transform-strict-mode-6.24.1.tgz"
@@ -10964,6 +10969,11 @@
   "integrity" "sha1-UylVzB6yCKPZkLOp+acFdGV+CPI="
   "resolved" "https://registry.npmmirror.com/vue-hot-reload-api/download/vue-hot-reload-api-2.3.4.tgz"
   "version" "2.3.4"
+
+"vue-i18n@^8.26.8":
+  "integrity" "sha512-BN2OXolO15AKS95yNF8oOtARibaO6RxyKkAYNV4XpOmL7S4eVZYMIDtyvDv+XGZaiUmBJSH9mdNqzexvGMnK2A=="
+  "resolved" "https://registry.npmmirror.com/vue-i18n/download/vue-i18n-8.26.8.tgz"
+  "version" "8.26.8"
 
 "vue-jest@^3.0.5":
   "integrity" "sha1-ptKXWKXLTXUPXRJCISvjm+QpajM="

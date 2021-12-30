@@ -16,6 +16,33 @@ const name = defaultSettings.title || 'vue Admin Template' // page title
 const port = process.env.port || process.env.npm_config_port || 9528 // dev port
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
+const isProd = process.env.NODE_ENV === 'production'
+let externals = {}
+if (isProd) {
+  externals = {
+    vue: 'Vue',
+    'element-ui': 'ELEMENT',
+    xlsx: 'XLSX',
+    'echarts': 'echarts',
+    'cos-js-sdk-v5': 'COS'
+  }
+}
+const cdns = {
+  css: [],
+  js: []
+}
+cdns.js = [
+  'https://unpkg.com/vue/dist/vue.js', // vuejs
+  'https://unpkg.com/element-ui/lib/index.js', // element
+  'https://cdn.jsdelivr.net/npm/xlsx@0.16.6/dist/xlsx.full.min.js', // xlsx 相关
+  'https://cdn.jsdelivr.net/npm/xlsx@0.16.6/dist/jszip.min.js', // xlsx 相关
+  'https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/echarts.min.js',
+  'https://cdn.jsdelivr.net/npm/cos-js-sdk-v5/dist/cos-js-sdk-v5.min.js'
+]
+cdns.css = [
+  'https://unpkg.com/element-ui/lib/theme-chalk/index.css'
+]
+console.log(cdns)
 module.exports = {
   /**
    * You will need to set publicPath if you plan to deploy your site under a sub path,
@@ -54,7 +81,9 @@ module.exports = {
       alias: {
         '@': resolve('src')
       }
-    }
+    },
+    // 排除 elementUI xlsx  和 vue
+    externals
   },
   chainWebpack(config) {
     // it can improve the speed of the first screen, it is recommended to turn on preload
